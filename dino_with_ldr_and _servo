@@ -1,0 +1,29 @@
+#include <Servo.h>
+
+Servo servo;    // Create a servo object
+
+int ldrPin = A0; // LDR pin connected to analog pin A0
+int jumpThreshold = 700;  // Adjust this value based on your LDR sensitivity
+
+void setup() {
+  servo.attach(9);  // Attach the servo to pin 9
+  Serial.begin(9600);
+}
+
+void loop() {
+  int ldrValue = analogRead(ldrPin);  // Read the LDR value
+
+  Serial.println(ldrValue);  // Print LDR value to Serial Monitor
+
+  if (ldrValue < jumpThreshold) {
+    // If LDR detects a low light condition, trigger jump
+    jump();
+    delay(1000);  // Delay to avoid rapid jumps
+  }
+}
+
+void jump() {
+  servo.write(90);  // Adjust the servo angle for the jump
+  delay(500);       // Delay for the jump duration
+  servo.write(0);   // Return the servo to the initial position
+}
